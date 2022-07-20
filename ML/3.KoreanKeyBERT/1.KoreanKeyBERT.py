@@ -55,14 +55,10 @@ for line in news:
     model = SentenceTransformer('sentence-transformers/xlm-r-100langs-bert-base-nli-stsb-mean-tokens')
     doc_embedding = model.encode([doc])
     candidate_embeddings = model.encode(candidates)
-
     top_n = 1
     distances = cosine_similarity(doc_embedding, candidate_embeddings)
     keywords = [candidates[index] for index in distances.argsort()[0][-top_n:]]
-     
     keywords_list.append(''.join(keywords))
-    print(cnt)
-    print(''.join(keywords))
 
 df_final[6] = keywords_list
 
