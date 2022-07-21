@@ -138,5 +138,6 @@ for i in files:
     dfs.append(data)
 
 final = pd.concat(dfs)
-final.reset_index(drop=True)
-final.to_csv("/data/model/model.csv", index=False, header=None)
+
+path1 = "/data/model/article_classification_{}.csv".format(datetime.now(gettz('Asia/Seoul'))-timedelta(1)).strftime("%Y%m%d")
+final.to_csv(path1, index=False, header=None)
