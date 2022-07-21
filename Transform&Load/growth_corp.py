@@ -16,11 +16,11 @@ newsSchema = StructType([
     StructField("maket_cap", FloatType(), False)])
 
 
-#당월 산업군별 기업 시가총액 불러오기
+# 당월 산업군별 기업 시가총액 불러오기
 path = "/data/collect/corperation/inudstry_market_cap_{}.csv".format(datetime.now(gettz('Asia/Seoul')).strftime("%Y%m"))
 corpDf = spark.read.format("csv").schema(newsSchema).load(path)
 
-# 전월 산업군별 기업 시가총액 볼러오기
+# 전월 산업군별 기업 시가총액 불러오기
 path1 = "/data/collect/corperation/inudstry_market_cap_{}.csv".format((datetime.now(gettz('Asia/Seoul'))-relativedelta(months=1)).strftime("%Y%m"))
 preMonth_corpDf = spark.read.format("csv").schema(newsSchema).load(path1)
 
