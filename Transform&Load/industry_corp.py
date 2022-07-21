@@ -38,12 +38,3 @@ props = {"driver":"com.mysql.cj.jdbc.Driver", "user":"user", "password": "passwo
 industryCorpList.write.mode("append").jdbc(newPath, tablename, properties=props)
 
 spark.stop()
-
-
-
-
-
-
-
-
-
