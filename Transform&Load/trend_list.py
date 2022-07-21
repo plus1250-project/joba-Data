@@ -32,10 +32,10 @@ keywordList = keywordDf.where(col("issue_date").between(endDate, fromDate)).grou
 
 # 산업군별 키워드 count 순위
 widowSpec = Window.partitionBy("industry_name").orderBy(desc("count"))
-keywordList1 = keywordList.withColumn("trend_rank", row_number().over(widowSpec)).where(col("trend_rank") <= 20)
+keywordList = keywordList.withColumn("trend_rank", row_number().over(widowSpec)).where(col("trend_rank") <= 20)
 
 # 컬럼 정렬
-keywordList2 = keywordList1.select("industry_name", "from_date", "keyword", col("count").alias("keyword_count"), "trend_rank")
+keywordList = keywordList.select("industry_name", "from_date", "keyword", col("count").alias("keyword_count"), "trend_rank")
 
 
 # DB 연결
@@ -44,6 +44,6 @@ tablename = "trend_keyword_list"
 props = {"driver":"com.mysql.cj.jdbc.Driver", "user":"user", "password": "password"}
 
 # DB 저장
-keywordList2.write.mode("append").jdbc(newPath, tablename, properties=props)
+keywordList.write.mode("append").jdbc(newPath, tablename, properties=props)
 
 spark.stop()
