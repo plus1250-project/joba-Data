@@ -139,5 +139,5 @@ for i in files:
 
 final = pd.concat(dfs)
 
-path1 = "/data/model/article_classification_{}.csv".format(datetime.now(gettz('Asia/Seoul'))-timedelta(1)).strftime("%Y%m%d")
+path1 = "/data/model/article_classification/article_classification_{}.csv".format(datetime.now(gettz('Asia/Seoul'))-timedelta(1)).strftime("%Y%m%d")
 final.to_csv(path1, index=False, header=None)
