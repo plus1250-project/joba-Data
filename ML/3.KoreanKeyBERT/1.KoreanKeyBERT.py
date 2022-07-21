@@ -62,5 +62,5 @@ for line in news:
 
 df_final[6] = keywords_list
 
-path1 = "/data/model/keyword_extraction_{}.csv".format(datetime.now(gettz('Asia/Seoul'))-timedelta(1)).strftime("%Y%m%d")
+path1 = "/data/model/keyword_extraction/keyword_{}.csv".format(datetime.now(gettz('Asia/Seoul'))-timedelta(1)).strftime("%Y%m%d")
 df_final.to_csv(path1, index=False, header=None)
