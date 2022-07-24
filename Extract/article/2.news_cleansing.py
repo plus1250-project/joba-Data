@@ -94,12 +94,12 @@ tmp = spark.sql("select * from news where (news_title not like '%[표]%')\
                 and (NEWS_PRESS != '코메디닷컴')\
                 and (NEWS_PRESS != '헬스조선')")
 
-# ## 기사제목 및 내용 null, 중복 처리
+# 기사제목 및 내용 null, 중복 처리
 newsNullDrop = tmp.na.drop()
 newsCleansing = newsNullDrop.dropDuplicates(['NEWS_TITLE', 'NEWS_TEXT'])
 
 
-## 기사 정제 데이터 저장
+# 기사 정제 데이터 저장
 path1 = "/data/collect/article_cleansing/article_cleansing_{}.csv".format((datetime.now(gettz('Asia/Seoul'))-timedelta(1)).strftime("%Y%m"))
 newsCleansing.write.csv(path1, header = True, quoteAll = False)
 
