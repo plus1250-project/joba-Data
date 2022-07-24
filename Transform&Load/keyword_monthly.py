@@ -51,7 +51,12 @@ for i in range(7):
     cnt = 0
     for j in indusKeywordList[i]:
         cnt += 1 
-        globals()["{}".format(industyList[i])+"{}".format(cnt)] = keywordDf        .select("keyword", date_format("issue_date", "yyyy-MM").alias("reg_month"), "industry_name")        .where(col("keyword") == j).where(col("industry_name") == industyList[i])        .groupby("keyword","reg_month","industry_name").count()        .withColumnRenamed("count", "keyword_count")        .withColumn("input_date", lit(fromDate)).sort(col("reg_month"))
+        globals()["{}".format(industyList[i])+"{}".format(cnt)] = 
+            keywordDf.select("keyword", date_format("issue_date", "yyyy-MM").alias("reg_month"), "industry_name")\
+            .where(col("keyword") == j).where(col("industry_name") == industyList[i])\
+            .groupby("keyword","reg_month","industry_name").count()\
+            .withColumnRenamed("count", "keyword_count")\
+            .withColumn("input_date", lit(fromDate)).sort(col("reg_month"))
         
         # keyword_count = 0일 경우 row 추가
         for k in list(set(['2021-07','2021-08','2021-09','2021-10','2021-11','2021-12','2022-01','2022-02','2022-03','2022-04','2022-05','2022-06']) - set(globals()["{}".format(industyList[i])+"{}".format(cnt)].select('reg_month').rdd.map(lambda x : x[0]).collect())):
