@@ -1,6 +1,7 @@
 # 불필요 기사 데이터 삭제 처리
 import pyspark
 spark = pyspark.sql.SparkSession.builder.getOrCreate()
+
 from pyspark.sql.types import StructType, StructField, StringType, DateType
 from datetime import datetime, timedelta
 from dateutil.tz import gettz
@@ -12,7 +13,7 @@ newsSchema = StructType([
     StructField("NEWS_PRESS", StringType(), False),
     StructField("NEWS_DATE", DateType(), False)])
 
-path = '/data/news/{}_*.csv'.format((datetime.now(gettz('Asia/Seoul'))-timedelta(1)).strftime("%Y%m%d"))
+path = "/data/collect/article_scraping/{}_*.csv".format((datetime.now(gettz('Asia/Seoul'))-timedelta(1)).strftime("%Y%m%d"))
 newsDf = spark.read.format("csv").schema(newsSchema).option("dateFormat", "yyyy.MM.dd").load(path)
 
 # 불필요 기사 데이터 확인
@@ -93,9 +94,11 @@ tmp = spark.sql("select * from news where (news_title not like '%[표]%')\
                 and (NEWS_PRESS != '헬스조선')")
 
 # ## 기사제목 및 내용 null, 중복 처리
-newsNullDropDf = tmp.na.drop()
-newsCleansing = newsNullDropDf.dropDuplicates(['NEWS_TITLE', 'NEWS_TEXT'])
+newsNullDrop = tmp.na.drop()
+newsCleansing = newsNullDrop.dropDuplicates(['NEWS_TITLE', 'NEWS_TEXT'])
 
 ## 기사 정제 데이터 저장
 path1 = "/data/collect/article_cleansing/article_cleansing_{}.csv".format((datetime.now(gettz('Asia/Seoul'))-timedelta(1)).strftime("%Y%m"))
-newsCleansing.write.csv(path1, header = True)
+newsCleansing.write.csv(path1, header = True, quoteAll = False)
+
+spark.stop()
