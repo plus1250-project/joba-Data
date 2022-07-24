@@ -69,3 +69,5 @@ airflow users create\
 --role [user role]\
 --email [user email]
 ```
+
+[* 참고](https://stackoverflow.com/questions/60987782/facing-issue-while-configuring-mysql-with-apache-airflow-in-hadoop)
